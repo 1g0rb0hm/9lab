@@ -5,8 +5,6 @@
   <b>9lab - Random Plan9 Stuff</b>
 </p>
 
-# 9lab - Random Plan9 Stuff
-
 Collection of programs and script used on **9front** running on **Qemu**.
 
 # Desktop
