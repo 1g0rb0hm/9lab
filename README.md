@@ -1,11 +1,11 @@
 <p align="center">
   <img src="glendalab.png" alt="Banner">
 </p>
-<p align="center">
-  <b>9lab - Random Plan9 Stuff</b>
-</p>
 
-Collection of programs and script used on **9front** running on **Qemu**.
+
+# 9lab - Random Plan9 Stuff
+
+Collection of programs and scripts used on **9front** running on **Qemu**.
 
 # Desktop
 
