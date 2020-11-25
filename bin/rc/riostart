@@ -5,9 +5,11 @@
 # @{rfork n; aux/realemu; aux/vga -m vesa -l 2560x1440x32}
 
 #-- top left:  stats
-window 0,0,720,120 stats -lmisce
+window 0,0,473,120 stats -lmisce
+#-- top middle: vdir
+window 483,0,956,120 vdir
 #-- top right: winwatch
-window 730,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
+window 966,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
 
 #-- left: term
 window 0,130,720,800
