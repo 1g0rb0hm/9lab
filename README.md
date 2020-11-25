@@ -41,12 +41,14 @@ switch ($#*) {
 ```sh
 ; cat $home/bin/rc/riostart
 #!/bin/rc
-# default vgasize=1440x900x32
+# -- vgasize=1440x900x32
 
 #-- top left:  stats
-window 0,0,720,120 stats -lmisce
+window 0,0,473,120 stats -lmisce
+#-- top middle: vdir
+window 483,0,956,120 vdir
 #-- top right: winwatch
-window 730,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
+window 966,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
 
 #-- left: term
 window 0,130,720,800
@@ -92,6 +94,8 @@ cat /mnt/acme/$winid/event | acmeevent
 Then you should see all events that are received by the **window** (see **event** in acme(4)).
 
 # Go
+
+To install Go we one has to bootstrap the installation with an earlier version of Go already compiled for Plan 9. The process consists of obtaining the bootstap version and the target version, and telling the target version to use the bootstrapped version in order to build the toolchain. s
 
 Temporary scratch space:
 ```sh
