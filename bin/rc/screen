@@ -1,0 +1,19 @@
+#!/bin/rc
+
+fn Help {
+  echo `{basename $0}^' (small|big)'
+}
+
+switch ($#*) {
+  case 0
+    Help
+  case *
+    switch ($1) {
+      case small
+        @{rfork n; aux/realemu; aux/vga -m vesa -l 1440x900x32}
+      case big
+        @{rfork n; aux/realemu; aux/vga -m vesa -l 2560x1440x32}
+      case *
+        Help
+    }
+}

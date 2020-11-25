@@ -1,0 +1,23 @@
+#!/bin/rc
+# -- vgasize=1440x900x32
+# @{rfork n; aux/realemu; aux/vga -p}
+# @{rfork n; aux/realemu; aux/vga -m vesa -l 1440x900x32}
+# @{rfork n; aux/realemu; aux/vga -m vesa -l 2560x1440x32}
+
+#-- top left:  stats
+window 0,0,720,120 stats -lmisce
+#-- top right: winwatch
+window 730,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
+
+#-- left: term
+window 0,130,720,800
+#-- right: acme
+window 730,130,1440,800 acme -a -c 1
+
+#-- bottom left: capturing console messages
+window 0,810,720,890 cat /dev/kprint
+#-- bottom right: face
+window 730,810,1440,890 faces
+
+# run a system shell on the serial console
+~ $#console 0 || window -scroll console
