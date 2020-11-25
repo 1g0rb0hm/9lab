@@ -62,6 +62,11 @@ window 730,810,1440,890 faces
 ~ $#console 0 || window -scroll console
 ```
 
+<p align="center">
+  <img src="screen.png" alt="Screenshot">
+</p>
+
+
 # ACME
 
 Cut and Past mouse chording is broken for me on **Qemu** using **9front** *emailschaden*. To debug it I have stolen a program from **Plan9 from User Space** called `acmeevent.c` that prints all events an **acme** window receives.
