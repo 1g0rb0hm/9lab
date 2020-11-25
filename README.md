@@ -62,6 +62,8 @@ window 730,810,1440,890 faces
 ~ $#console 0 || window -scroll console
 ```
 
+Here is what it looks like:
+
 <p align="center">
   <img src="screen.png" alt="Screenshot">
 </p>
