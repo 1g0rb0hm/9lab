@@ -111,7 +111,7 @@ term% hget https://golang.org/dl/go1.14.7.src.tar.gz | gunzip -c | tar x
 
 Create **target** installation directory and **bind** downloaded version to that directory:
 ```sh
-term% mkdir -p /sys/lib/go/amd64-1.14.7 
+term% mkdir -p /sys/lib/go/amd64-1.14.7
 term% bind -c go /sys/lib/go/amd64-1.14.7 
 ```
 
