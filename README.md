@@ -2,7 +2,7 @@
   <img src="glendalab.png" alt="Banner">
 </p>
 <p align="center">
-  <b>Collection of programs, scripts, and notes about **9front**</b>
+  <b>9Front collection of programs, scripts, and notes</b>
 </p>
 
 # Desktop
