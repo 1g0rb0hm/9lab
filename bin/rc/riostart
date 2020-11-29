@@ -20,9 +20,7 @@ y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
                                (0  *$1)+$2 , (1.5*$1)-$2,
                                (1.5*$1)+$2 , (9  *$1)-$2,
                                (9  *$1)+$2 , (10 *$1)-$2)}'})
-
 # -- FUNS
-
 fn TopRow{
 	ldim=`{echo $x(1),$y(1),$x(2),$y(2) | sed 's/[ ]+//g'}
 	rdim=`{echo $x(3),$y(1),$x(4),$y(2) | sed 's/[ ]+//g'}
@@ -43,13 +41,8 @@ fn BotRow{
 	window $ldim vdir
 	window $rdim faces
 }
-
 # -- MAIN
-
 TopRow
 MidRow
 BotRow
-
-# run a system shell on the serial console
-~ $#console 0 || window -scroll console
  
