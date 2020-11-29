@@ -1,25 +1,55 @@
 #!/bin/rc
-# -- vgasize=1440x900x32
-# @{rfork n; aux/realemu; aux/vga -p}
-# @{rfork n; aux/realemu; aux/vga -m vesa -l 1440x900x32}
-# @{rfork n; aux/realemu; aux/vga -m vesa -l 2560x1440x32}
 
-#-- top left:  stats
-window 0,0,473,120 stats -lmisce
-#-- top middle: vdir
-window 483,0,956,120 vdir
-#-- top right: winwatch
-window 966,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
+# -- VARS
+# Dim..screen dimension (W x H)
+Dim=(`{echo $vgasize | awk -Fx '{printf("%d %d", $1, $2)}'})
+W=`{echo $Dim | awk '{print $1}'}
+H=`{echo $Dim | awk '{print $2}'}
+# s..space from border
+s=5
+# w..window width ratio
+w=`{echo $W | awk '{print $1/2}'}
+# h..window height ratio
+h=`{echo $H | awk '{print $1/10}'}
+# x..list of x point pairs (2 columns -> 2 pairs)
+x=(`{echo $w $s | awk '{printf("%d %d %d %d",
+                               (0*$1)+$2 , (1*$1)-$2,
+                               (1*$1)+$2 , (2*$1)-$2)}'})
+# -- y..list of y point pairs (3 rows -> 3 pairs)
+y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
+                               (0  *$1)+$2 , (1.5*$1)-$2,
+                               (1.5*$1)+$2 , (9  *$1)-$2,
+                               (9  *$1)+$2 , (10 *$1)-$2)}'})
 
-#-- left: term
-window 0,130,720,800
-#-- right: acme
-window 730,130,1440,800 acme -a -c 1
+# -- FUNS
 
-#-- bottom left: capturing console messages
-window 0,810,720,890 cat /dev/kprint
-#-- bottom right: face
-window 730,810,1440,890 faces
+fn TopRow{
+	ldim=`{echo $x(1),$y(1),$x(2),$y(2) | sed 's/[ ]+//g'}
+	rdim=`{echo $x(3),$y(1),$x(4),$y(2) | sed 's/[ ]+//g'}
+	window $ldim stats -lmisce
+	window $rdim winwatch -e '^(winwatch|stats|faces|vdir)'
+}
+fn MidRow{
+	dim=`{echo $x(1),$y(3),$x(4),$y(4) | sed 's/[ ]+//g'}
+	ldim=`{echo $x(1),$y(3),$x(2),$y(4) | sed 's/[ ]+//g'}
+	rdim=`{echo $x(3),$y(3),$x(4),$y(4) | sed 's/[ ]+//g'}
+	window $dim  acme -c2 -a
+	window $ldim 
+	window $rdim
+}
+fn BotRow{
+	ldim=`{echo $x(1),$y(5),$x(2),$y(6) | sed 's/[ ]+//g'}
+	rdim=`{echo $x(3),$y(5),$x(4),$y(6) | sed 's/[ ]+//g'}
+	window $ldim vdir
+	window $rdim faces
+}
+
+# -- MAIN
+
+TopRow
+MidRow
+BotRow
 
 # run a system shell on the serial console
 ~ $#console 0 || window -scroll console
+ 
