@@ -2,14 +2,11 @@
   <img src="glendalab.png" alt="Banner">
 </p>
 
-
-# 9lab - Random Plan9 Stuff
-
-Collection of programs and scripts used on **9front** running on **Qemu**.
+Collection of programs, scripts, and documentation about **9front**.
 
 # Desktop
 
-When running in my notebook screen `vgasize=1440x900x32` works great. On my external monitor `vesa=2560x1440x32` works great. To accommodate both I always boot using the smaller size and have the following **rc** script called `screen` to adjust the monitor size:
+When running in my notebook screen `vgasize=1440x900x32` works great. On the external monitor `vesa=2560x1440x32` works great (YMMV). To accommodate both I always boot using the smaller size and have the following **rc** script called `screen` to adjust the monitor size:
 
 ```sh
 ; screen big
@@ -36,32 +33,57 @@ switch ($#*) {
 }
 ```
 
-**rio** is configured via the following `riostart` script:
+**rio** is configured via the following `riostart` script to have a 2-column 3-rows layout with **acme** across the middle row:
 
 ```sh
 ; cat $home/bin/rc/riostart
 #!/bin/rc
-# -- vgasize=1440x900x32
 
-#-- top left:  stats
-window 0,0,473,120 stats -lmisce
-#-- top middle: vdir
-window 483,0,956,120 vdir
-#-- top right: winwatch
-window 966,0,1440,120 winwatch -e '^(winwatch|stats|faces)'
-
-#-- left: term
-window 0,130,720,800
-#-- right: acme
-window 730,130,1440,800 acme -a -c 1
-
-#-- bottom left: capturing console messages
-window 0,810,720,890 cat /dev/kprint
-#-- bottom right: face
-window 730,810,1440,890 faces
-
-# run a system shell on the serial console
-~ $#console 0 || window -scroll console
+# -- VARS
+# Dim..screen dimension (W x H)
+Dim=(`{echo $vgasize | awk -Fx '{printf("%d %d", $1, $2)}'})
+W=`{echo $Dim | awk '{print $1}'}
+H=`{echo $Dim | awk '{print $2}'}
+# s..space from border
+s=5
+# w..window width ratio
+w=`{echo $W | awk '{print $1/2}'}
+# h..window height ratio
+h=`{echo $H | awk '{print $1/10}'}
+# x..list of x point pairs (2 columns -> 2 pairs)
+x=(`{echo $w $s | awk '{printf("%d %d %d %d",
+                               (0*$1)+$2 , (1*$1)-$2,
+                               (1*$1)+$2 , (2*$1)-$2)}'})
+# -- y..list of y point pairs (3 rows -> 3 pairs)
+y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
+                               (0  *$1)+$2 , (1.5*$1)-$2,
+                               (1.5*$1)+$2 , (9  *$1)-$2,
+                               (9  *$1)+$2 , (10 *$1)-$2)}'})
+# -- FUNS
+fn TopRow{
+	ldim=`{echo $x(1),$y(1),$x(2),$y(2) | sed 's/[ ]+//g'}
+	rdim=`{echo $x(3),$y(1),$x(4),$y(2) | sed 's/[ ]+//g'}
+	window $ldim stats -lmisce
+	window $rdim winwatch -e '^(winwatch|stats|faces|vdir)'
+}
+fn MidRow{
+	dim=`{echo $x(1),$y(3),$x(4),$y(4) | sed 's/[ ]+//g'}
+	ldim=`{echo $x(1),$y(3),$x(2),$y(4) | sed 's/[ ]+//g'}
+	rdim=`{echo $x(3),$y(3),$x(4),$y(4) | sed 's/[ ]+//g'}
+	window $dim  acme -c2 -a
+	window $ldim 
+	window $rdim
+}
+fn BotRow{
+	ldim=`{echo $x(1),$y(5),$x(2),$y(6) | sed 's/[ ]+//g'}
+	rdim=`{echo $x(3),$y(5),$x(4),$y(6) | sed 's/[ ]+//g'}
+	window $ldim vdir
+	window $rdim faces
+}
+# -- MAIN
+TopRow
+MidRow
+BotRow
 ```
 
 Here is what it looks like:
@@ -73,7 +95,7 @@ Here is what it looks like:
 
 # Acme
 
-Cut and Past mouse chording is broken for me on **Qemu** using **9front** *emailschaden*. To debug it I have stolen a program from **Plan9 from User Space** called `acmeevent.c` that prints all events an **acme** window receives.
+`acmeevent` is a small program that prints all events an **acme** window receives (stolen a from **Plan9 from User Space**).
 
 Compile and install it:
 
@@ -85,7 +107,7 @@ amd64
 ; cp acmeevent $home/bin/$objtype
 ```
 
-Open **acme** and paste the following into the **tag** of the **windows** you want to debug:
+Open **acme** and paste the following into the **tag** of the **window** you want to debug:
 
 ```sh
 cat /mnt/acme/$winid/event | acmeevent
@@ -95,7 +117,7 @@ Then you should see all events that are received by the **window** (see **event*
 
 # Go
 
-To install Go we one has to bootstrap the installation with an earlier version of Go already compiled for Plan 9. The process consists of obtaining the bootstap version and the target version, and telling the target version to use the bootstrapped version in order to build the toolchain. s
+To install Go one has to bootstrap the installation with an earlier version of Go already compiled for Plan 9. The process consists of obtaining the bootstap version and the target version, followed by telling the target version to use the bootstrapped version in order to build the toolchain.
 
 Temporary scratch space:
 ```sh
@@ -127,7 +149,7 @@ term% ip/ipconfig -P loopback /dev/null 127.1
 term% ip/ipconfig -P loopback /dev/null ::1
 ```
 
-Start the install (this takes a while...):
+Start the install:
 ```sh
 term% ./make.rc
 Building Go cmd/dist using /tmp/go-plan9-amd64-bootstrap
