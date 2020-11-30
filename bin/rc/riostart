@@ -1,10 +1,11 @@
 #!/bin/rc
+# -- vgasize=1440x900x32
 
 # -- VARS
 # Dim..screen dimension (W x H)
 Dim=(`{echo $vgasize | awk -Fx '{printf("%d %d", $1, $2)}'})
-W=`{echo $Dim | awk '{print $1}'}
-H=`{echo $Dim | awk '{print $2}'}
+W=$Dim(1)
+H=$Dim(2)
 # s..space from border
 s=5
 # w..window width ratio
@@ -15,32 +16,34 @@ h=`{echo $H | awk '{print $1/10}'}
 x=(`{echo $w $s | awk '{printf("%d %d %d %d",
                                (0*$1)+$2 , (1*$1)-$2,
                                (1*$1)+$2 , (2*$1)-$2)}'})
-# -- y..list of y point pairs (3 rows -> 3 pairs)
+# y..list of y point pairs (3 rows -> 3 pairs)
 y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
                                (0  *$1)+$2 , (1.5*$1)-$2,
                                (1.5*$1)+$2 , (9  *$1)-$2,
                                (9  *$1)+$2 , (10 *$1)-$2)}'})
+
 # -- FUNS
 fn TopRow{
-	ldim=`{echo $x(1),$y(1),$x(2),$y(2) | sed 's/[ ]+//g'}
-	rdim=`{echo $x(3),$y(1),$x(4),$y(2) | sed 's/[ ]+//g'}
+	ldim=$x(1)^','^$y(1)^','^$x(2)^','^$y(2)
+	rdim=$x(3)^','^$y(1)^','^$x(4)^','^$y(2)
 	window $ldim stats -lmisce
 	window $rdim winwatch -e '^(winwatch|stats|faces|vdir)'
 }
 fn MidRow{
-	dim=`{echo $x(1),$y(3),$x(4),$y(4) | sed 's/[ ]+//g'}
-	ldim=`{echo $x(1),$y(3),$x(2),$y(4) | sed 's/[ ]+//g'}
-	rdim=`{echo $x(3),$y(3),$x(4),$y(4) | sed 's/[ ]+//g'}
-	window $dim  acme -c2 -a
+	mdim=$x(1)^','^$y(3)^','^$x(4)^','^$y(4)
+	ldim=$x(1)^','^$y(3)^','^$x(2)^','^$y(4)
+	rdim=$x(3)^','^$y(3)^','^$x(4)^','^$y(4)
+	window $mdim -hide acme -c2 -a
 	window $ldim 
 	window $rdim
 }
 fn BotRow{
-	ldim=`{echo $x(1),$y(5),$x(2),$y(6) | sed 's/[ ]+//g'}
-	rdim=`{echo $x(3),$y(5),$x(4),$y(6) | sed 's/[ ]+//g'}
+	ldim=$x(1)^','^$y(5)^','^$x(2)^','^$y(6)
+	rdim=$x(3)^','^$y(5)^','^$x(4)^','^$y(6)
 	window $ldim vdir
 	window $rdim faces
 }
+
 # -- MAIN
 TopRow
 MidRow
