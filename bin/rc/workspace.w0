@@ -23,30 +23,27 @@ fn BotRow{
   { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
   window -r ($x(1) $y(5) $x(4) $y(6)) rc
 }
+fn TileScreen{
+  Dim=(`{read -m $home/tmp/w0.dim})  # screen dimension (W x H)
+  W=$Dim(1)
+  H=$Dim(2)
+  s=4                                # space from border
+  w=`{echo $W | awk '{print $1/2}'}  # window width ratio
+  h=`{echo $H | awk '{print $1/10}'} # window height ratio
+  # x..list of x point pairs (2 columns -> 2 pairs)
+  x=(`{echo $w $s | awk '{printf("%d %d %d %d",
+                                 (0*$1)+$2 , (1*$1)-$2,
+                                 (1*$1)+$2 , (2*$1)-$2)}'})
+  # y..list of y point pairs (3 rows -> 3 pairs)
+  y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
+                                 (0*$1)+$2 , ( 1*$1)-$2,
+                                 (1*$1)+$2 , ( 9*$1)-$2,
+                                 (9*$1)+$2 , (10*$1)-$2)}'})
+  TopRow $#x ($x) $#y ($y)
+  MidRow $#x ($x) $#y ($y)
+  BotRow $#x ($x) $#y ($y)
+}
 
-# -- VARS
-# Dim..screen dimension (W x H)
-Dim=(`{read -m $home/tmp/w0.dim})
-W=$Dim(1)
-H=$Dim(2)
-
-# s..space from border
-s=2
-# w..window width ratio
-w=`{echo $W | awk '{print $1/2}'}
-# h..window height ratio
-h=`{echo $H | awk '{print $1/10}'}
-# x..list of x point pairs (2 columns -> 2 pairs)
-x=(`{echo $w $s | awk '{printf("%d %d %d %d",
-                               (0*$1)+$2 , (1*$1)-$2,
-                               (1*$1)+$2 , (2*$1)-$2)}'})
-# y..list of y point pairs (3 rows -> 3 pairs)
-y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
-                               (0  *$1)+$2 , (1  *$1)-$2,
-                               (1  *$1)+$2 , (9  *$1)-$2,
-                               (9  *$1)+$2 , (10 *$1)-$2)}'})
 # -- MAIN
 label w0:terms
-TopRow $#x ($x) $#y ($y)
-MidRow $#x ($x) $#y ($y)
-BotRow $#x ($x) $#y ($y)
+TileScreen
