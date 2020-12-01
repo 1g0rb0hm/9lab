@@ -2,56 +2,56 @@
 
 # -- FUNS
 fn ScrDim{
-	w=0
-	h=0
-	devscr=/dev/screen
-	if(test -r $devscr){
-		scr=`{read -c 59 $devscr}
-		w=`{echo $scr(4) - $scr(2) | bc}
-		h=`{echo $scr(5) - $scr(3) | bc}	
-	}
-	if not {
-		dim=(`{echo $vgasize | awk -Fx '{printf("%d %d", $1, $2)}'})
-		w=$dim(1)
-		h=$dim(1)	
-	}
-	echo $w $h
+  w=0
+  h=0
+  devscr=/dev/screen
+  if(test -r $devscr){
+    scr=`{read -c 59 $devscr}
+    w=`{echo $scr(4) - $scr(2) | bc}
+    h=`{echo $scr(5) - $scr(3) | bc}  
+  }
+  if not {
+    dim=(`{echo $vgasize | awk -Fx '{printf("%d %d", $1, $2)}'})
+    w=$dim(1)
+    h=$dim(1)  
+  }
+  echo $w $h
 }
 fn TopRow{
-    { xlen=$1       ; shift 1     }
-	{ x=$*(1-$xlen) ; shift $xlen }
-    { ylen=$1       ; shift 1     }
-    { y=$*(1-$ylen) ; shift $ylen }
-	window -r ($x(1) $y(1) $x(2) $y(2))  stats -lmisce
-	window $x(3)^,^$y(1)^,^$x(4)^,^$y(2) winwatch -e '^(winwatch|stats|faces|vdir)'
+  { xlen=$1       ; shift 1     }
+  { x=$*(1-$xlen) ; shift $xlen }
+  { ylen=$1       ; shift 1     }
+  { y=$*(1-$ylen) ; shift $ylen }
+  window -r ($x(1) $y(1) $x(2) $y(2))  stats -lmisce
+  window $x(3)^,^$y(1)^,^$x(4)^,^$y(2) winwatch -e '^(winwatch|stats|faces|vdir)'
 }
 fn MidRow{
-    { xlen=$1       ; shift 1     }
-	{ x=$*(1-$xlen) ; shift $xlen }
-    { ylen=$1       ; shift 1     }
-    { y=$*(1-$ylen) ; shift $ylen }
+  { xlen=$1       ; shift 1     }
+  { x=$*(1-$xlen) ; shift $xlen }
+  { ylen=$1       ; shift 1     }
+  { y=$*(1-$ylen) ; shift $ylen }
     
-    w=`{echo $x(4) - $x(1) | bc}
-    h=`{echo $y(4) - $y(3) | bc}
-    echo $w $h >$home/tmp/w0.dim
-	window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w0
+  w=`{echo $x(4) - $x(1) | bc}
+  h=`{echo $y(4) - $y(3) | bc}
+  echo $w $h >$home/tmp/w0.dim
+  window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w0
 
-    w=`{echo $x(4) - $x(1) | bc}
-    h=`{echo $y(4) - $y(3) | bc}
-    echo $w $h >$home/tmp/w1.dim
-	window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w1
+  w=`{echo $x(4) - $x(1) | bc}
+  h=`{echo $y(4) - $y(3) | bc}
+  echo $w $h >$home/tmp/w1.dim
+  window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w1
 
-	window -hide -r ($x(1) $y(3) $x(4) $y(4)) acme -c2 -a
-	window -r ($x(1) $y(3) $x(2) $y(4)) rc
-	window -r ($x(3) $y(3) $x(4) $y(4)) rc
+  window -hide -r ($x(1) $y(3) $x(4) $y(4)) acme -c2 -a
+  window -r ($x(1) $y(3) $x(2) $y(4)) rc
+  window -r ($x(3) $y(3) $x(4) $y(4)) rc
 }
 fn BotRow{
-    { xlen=$1       ; shift 1     }
-	{ x=$*(1-$xlen) ; shift $xlen }
-    { ylen=$1       ; shift 1     }
-    { y=$*(1-$ylen) ; shift $ylen }
-	window -r ($x(1) $y(5) $x(2) $y(6)) vdir
-	window -r ($x(3) $y(5) $x(4) $y(6)) faces
+  { xlen=$1       ; shift 1     }
+  { x=$*(1-$xlen) ; shift $xlen }
+  { ylen=$1       ; shift 1     }
+  { y=$*(1-$ylen) ; shift $ylen }
+  window -r ($x(1) $y(5) $x(2) $y(6)) vdir
+  window -r ($x(3) $y(5) $x(4) $y(6)) faces
 }
 
 # -- VARS
@@ -75,14 +75,9 @@ y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
                                (0  *$1)+$2 , (1.5*$1)-$2,
                                (1.5*$1)+$2 , (9  *$1)-$2,
                                (9  *$1)+$2 , (10 *$1)-$2)}'})
-
-
-
 # -- MAIN
 >$home/tmp/w0.dim
 >$home/tmp/w1.dim
 TopRow $#x ($x) $#y ($y)
 MidRow $#x ($x) $#y ($y)
 BotRow $#x ($x) $#y ($y)
-
- 
