@@ -1,6 +1,7 @@
 bind -qa $home/bin/rc /bin
 bind -qa $home/bin/$cputype /bin
 font=/lib/font/bit/lucidasans/typeunicode.9.font
+editor=(sam -d -a)
 GO111MODULE=on
 switch($service){
 case terminal
@@ -12,6 +13,7 @@ case terminal
 	echo -n 'res 3' > '#m/mousectl'
 	prompt=('term% ' '	')
 	fn term%{ $* }
+    editor=(sam -a)
     cat $home/lib/ssh/key > /mnt/factotum/ctl
 	rio -i riostart
 case cpu
@@ -26,6 +28,7 @@ case cpu
 	bind -a $home/go/bin /bin
 	prompt=('cpu% ' '	')
 	fn cpu%{ $* }
+    editor=(sam -a)
 	if(! test -e /mnt/term/dev/wsys){
 		# call from drawterm
 		if(test -e /mnt/term/dev/secstore){
@@ -38,7 +41,8 @@ case cpu
 		webcookies
 		webfs
 		plumber
-		rio
+    	cat $home/lib/ssh/key > /mnt/factotum/ctl
+		rio -i riostart
 	}
 case con
 	prompt=('cpu% ' '	')

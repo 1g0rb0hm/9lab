@@ -2,25 +2,25 @@
 
 # -- FUNS
 fn TopRow{
-  { xlen=$1       ; shift 1     }
-  { x=$*(1-$xlen) ; shift $xlen }
-  { ylen=$1       ; shift 1     }
-  { y=$*(1-$ylen) ; shift $ylen }
+  { xlen=$1       ; shift 1     } # param 1: list x length
+  { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
+  { ylen=$1       ; shift 1     } # param 3: list y length
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
   window $x(1)^,^$y(1)^,^$x(4)^,^$y(2) winwatch -e '^(winwatch|stats|faces|vdir)'
 }
 fn MidRow{
-  { xlen=$1       ; shift 1     }
-  { x=$*(1-$xlen) ; shift $xlen }
-  { ylen=$1       ; shift 1     }
-  { y=$*(1-$ylen) ; shift $ylen }
+  { xlen=$1       ; shift 1     } # param 1: list x length
+  { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
+  { ylen=$1       ; shift 1     } # param 3: list y length
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
   #window -r ($x(1) $y(3) $x(2) $y(4)) rc
   #window -r ($x(3) $y(3) $x(4) $y(4)) rc
 }
 fn BotRow{
-  { xlen=$1       ; shift 1     }
-  { x=$*(1-$xlen) ; shift $xlen }
-  { ylen=$1       ; shift 1     }
-  { y=$*(1-$ylen) ; shift $ylen }
+  { xlen=$1       ; shift 1     } # param 1: list x length
+  { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
+  { ylen=$1       ; shift 1     } # param 3: list y length
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
   window -scroll -r ($x(1) $y(5) $x(4) $y(6)) wircrc
 }
 
