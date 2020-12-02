@@ -261,18 +261,18 @@ term% cd /tmp
 Download **bootstrap** and **target** versions of **go**:
 ```sh
 term% hget http://www.9legacy.org/download/go/go1.14.1-plan9-amd64-bootstrap.tbz | bunzip2  -c | tar x 
-term% hget https://golang.org/dl/go1.14.7.src.tar.gz | gunzip -c | tar x
+term% hget https://golang.org/dl/go1.15.5.src.tar.gz | gunzip -c | tar x
 ```
 
 Create **target** installation directory and **bind** downloaded version to that directory:
 ```sh
-term% mkdir -p /sys/lib/go/amd64-1.14.7
-term% bind -c go /sys/lib/go/amd64-1.14.7 
+term% mkdir -p /sys/lib/go/amd64-1.15.5
+term% bind -c go /sys/lib/go/amd64-1.15.5 
 ```
 
 Setup `GOROOT_BOOTSTRAP`:
 ```sh
-term% cd /sys/lib/go/amd64-1.14.7/src 
+term% cd /sys/lib/go/amd64-1.15.5/src 
 term% GOROOT_BOOTSTRAP=/tmp/go-plan9-amd64-bootstrap
 ```
 
@@ -292,16 +292,16 @@ Building Go toolchain2 using go_bootstrap and Go toolchain1.
 Building Go toolchain3 using go_bootstrap and Go toolchain2.
 Building packages and commands for plan9/amd64.
 ---
-Installed Go for plan9/amd64 in /sys/lib/go/amd64-1.14.7
-Installed commands in /sys/lib/go/amd64-1.14.7/bin
-*** You need to bind /sys/lib/go/amd64-1.14.7/bin before /bin.
+Installed Go for plan9/amd64 in /sys/lib/go/amd64-1.15.5
+Installed commands in /sys/lib/go/amd64-1.15.5/bin
+*** You need to bind /sys/lib/go/amd64-1.15.5/bin before /bin.
 ```
 
 Persist installation and cleanup:
 ```sh
-term% unmount /sys/lib/go/amd64-1.14.7 
-term% dircp /tmp/go /sys/lib/go/amd64-1.14.7 
-term% cp /sys/lib/go/amd64-1.14.7/bin/* /amd64/bin 
+term% unmount /sys/lib/go/amd64-1.15.5 
+term% dircp /tmp/go /sys/lib/go/amd64-1.15.5 
+term% cp /sys/lib/go/amd64-1.15.5/bin/* /amd64/bin 
 term% unmount /tmp
 ```
 
