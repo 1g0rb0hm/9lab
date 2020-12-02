@@ -9,7 +9,7 @@
 
 ## Screen
 
-When running in my notebook screen `vgasize=1440x900x32` works great. On the external monitor `vesa=2560x1440x32` works great (YMMV). To accommodate both I always boot using the smaller size and have the following **rc** script called `screen` to adjust the monitor size:
+When using the builtin notebook screen `vgasize=1440x900x32` works great. On the external monitor `vesa=2560x1440x32` works great (YMMV). To accommodate both I always boot using the smaller size and have the following **rc** script called `screen` to adjust the monitor size:
 
 ```sh
 ; screen big
