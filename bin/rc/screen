@@ -1,18 +1,24 @@
 #!/bin/rc
+# -- vgasize=1440x900x32
+# @{rfork n; aux/realemu; aux/vga -p}
+# internal: @{rfork n; aux/realemu; aux/vga -m vesa -l 1440x900x32}
+# external: @{rfork n; aux/realemu; aux/vga -m vesa -l 1856x1392x32}
+# external: @{rfork n; aux/realemu; aux/vga -m vesa -l 2560x1440x32}
 
-fn Help {
-  echo `{basename $0}^' (small|big)'
+fn Help{
+  echo `{basename $0}^' (small|medium|large)'
 }
-
+fn SetDim{
+  @{rfork n; aux/realemu; aux/vga -m vesa -l $1}
+}
 switch ($#*) {
   case 0
     Help
   case *
     switch ($1) {
-      case small
-        @{rfork n; aux/realemu; aux/vga -m vesa -l 1440x900x32}
-      case big
-        @{rfork n; aux/realemu; aux/vga -m vesa -l 2560x1440x32}
+      case small   ; SetDim 1440x900x32
+      case medium  ; SetDim 1856x1392x32
+      case large   ; SetDim 2560x1440x32
       case *
         Help
     }
