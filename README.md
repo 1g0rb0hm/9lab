@@ -197,10 +197,28 @@ TileScreen
 
 ```
 
-Here is what it looks like:
+Here is what the **main** workspace looks like:
 
 <p align="center">
   <img src="img/screen.png" alt="Screenshot">
+</p>
+
+**main** workspace with **acme** in front:
+ 
+<p align="center">
+  <img src="img/screen.acme.png" alt="Screenshot">
+</p>
+ 
+On this screenshot you can see the a virtual desktop with **wircrc** running:
+
+<p align="center">
+  <img src="img/screen.irc.png" alt="Screenshot">
+</p>
+
+And finally, this is what the web looks like :-P :
+
+<p align="center">
+  <img src="img/screen.www.png" alt="Screenshot">
 </p>
 
 
