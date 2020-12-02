@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="glendalab.png" alt="Banner">
+  <img src="img/glendalab.png" alt="Banner">
 </p>
 <p align="center">
   <b>9Front collection of programs, scripts, and notes</b>
@@ -90,7 +90,7 @@ BotRow
 Here is what it looks like:
 
 <p align="center">
-  <img src="screen.png" alt="Screenshot">
+  <img src="img/screen.png" alt="Screenshot">
 </p>
 
 
