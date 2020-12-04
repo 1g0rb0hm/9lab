@@ -320,3 +320,16 @@ To build go modules CA certificates are required:
 ```sh
 term% hget https://curl.haxx.se/ca/cacert.pem >/sys/lib/tls/ca.pem 
 ```
+
+# Hugo
+
+To install the go based static site generator **hugo** you can do the following:
+
+```sh
+; mkdir -p $home/src
+; cd $home/src
+; git/clone https://github.com/1g0rb0hm/hugo
+; cd hugo
+; go install
+```
+
