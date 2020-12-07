@@ -1,0 +1,7 @@
+#!/bin/rc
+# ts: print timestamp YYYY-MM-DD hh:mm
+
+dt=(`{date -t    | tr 'T+' ' '})  # (date time timezone)
+t=(`{echo $dt(2) | tr ':'  ' '})  # (hh mm ss)
+
+echo -n $dt(1) $t(1)^':'^$t(2)
