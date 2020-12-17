@@ -35,12 +35,14 @@ fn MidRow{
   w=`{echo $x(4) - $x(1) | bc}
   h=`{echo $y(4) - $y(3) | bc}
   echo $w $h >$home/tmp/w0.dim
-  window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w0
+  w0font=$font
+  window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w0 -f $w0font
 
   w=`{echo $x(4) - $x(1) | bc}
   h=`{echo $y(4) - $y(3) | bc}
   echo $w $h >$home/tmp/w1.dim
-  window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w1
+  w1font=/lib/font/bit/pelm/unicode.9.font
+  window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i workspace.w1 -f $w1font
 
   window -hide -r ($x(1) $y(3) $x(4) $y(4)) acme -c3 -a
   window -r ($x(1) $y(3) $x(2) $y(4)) rc
