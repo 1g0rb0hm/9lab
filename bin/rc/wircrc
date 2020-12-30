@@ -4,15 +4,15 @@ basename `{echo $0} | tr -d \x0a >/mnt/wsys/label
 
 wins=()
 cons=()
+# 'irc.freenode.net!#plan9'  \
+# 'irc.freenode.net!#9front' \
 chans=(\
 'irc.freenode.net!#cat-v' \
-'irc.freenode.net!#plan9' \
-'irc.freenode.net!#9front' \
 )
 
 server=irc.freenode.net
-realname='<nil>'
-nick=_9lab_
+realname='0x2A'
+nick=boehm_igor
 pass=()
 userpass=`{auth/userpasswd 'server='^$server^' service=irc user='^$nick >[2]/dev/null}
 if(~ $#userpass 2) {
