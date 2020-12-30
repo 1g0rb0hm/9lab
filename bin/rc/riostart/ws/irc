@@ -1,0 +1,49 @@
+#!/bin/rc
+. /bin/riostart/common.rc
+
+# -- FUNS
+fn TopRow{
+  { xlen=$1       ; shift 1     } # param 1: list x length
+  { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
+  { ylen=$1       ; shift 1     } # param 3: list y length
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
+  window $x(1)^,^$y(1)^,^$x(4)^,^$y(2) winwatch -e '^(winwatch|stats|faces|vdir|wircrc)'
+}
+fn MidRow{
+  { xlen=$1       ; shift 1     } # param 1: list x length
+  { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
+  { ylen=$1       ; shift 1     } # param 3: list y length
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
+  #window -r ($x(1) $y(3) $x(2) $y(4)) rc
+  #window -r ($x(3) $y(3) $x(4) $y(4)) rc
+}
+fn BotRow{
+  { xlen=$1       ; shift 1     } # param 1: list x length
+  { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
+  { ylen=$1       ; shift 1     } # param 3: list y length
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
+  window -scroll -r ($x(1) $y(5) $x(4) $y(6)) wircrc
+}
+fn TileScreen{
+  Dim=(`{GetWsDim})  # screen dimension (W x H)
+  W=$Dim(1)
+  H=$Dim(2)
+  s=4                                # space from border
+  w=`{echo $W | awk '{print $1/2}'}  # window width ratio
+  h=`{echo $H | awk '{print $1/10}'} # window height ratio
+  # x..list of x point pairs (2 columns -> 2 pairs)
+  x=(`{echo $w $s | awk '{printf("%d %d %d %d",
+                                 (0*$1)+$2 , (1*$1)-$2,
+                                 (1*$1)+$2 , (2*$1)-$2)}'})
+  # y..list of y point pairs (3 rows -> 3 pairs)
+  y=(`{echo $h $s | awk '{printf("%d %d %d %d %d %d",
+                                 (0*$1)+$2 , ( 1*$1)-$2,
+                                 (1*$1)+$2 , ( 9*$1)-$2,
+                                 (9*$1)+$2 , (10*$1)-$2)}'})
+  TopRow $#x ($x) $#y ($y)
+  MidRow $#x ($x) $#y ($y)
+  BotRow $#x ($x) $#y ($y)
+}
+# -- MAIN
+label ws:irc
+TileScreen

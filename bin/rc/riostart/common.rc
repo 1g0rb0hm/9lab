@@ -1,0 +1,27 @@
+
+fn ScrDim{  # determine screen dimension (W H)
+  w=0
+  h=0
+  devscr=/dev/screen
+  if(test -r $devscr){
+    scr=`{read -c 59 $devscr}
+    w=`{echo $scr(4) - $scr(2) | bc}
+    h=`{echo $scr(5) - $scr(3) | bc}  
+  }
+  if not {
+    dim=(`{echo $vgasize | awk -Fx '{printf("%d %d", $1, $2)}'})
+    w=$dim(1)
+    h=$dim(2)  
+  }
+  echo $w $h
+}
+
+fn PutWsDim{
+	w=$1
+	h=$2
+	echo $w $h >$home/tmp/riostart.ws.dim
+}
+
+fn GetWsDim{
+	read -m $home/tmp/riostart.ws.dim
+}
