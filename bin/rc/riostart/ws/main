@@ -7,9 +7,12 @@ fn TopRow{
   { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
   { ylen=$1       ; shift 1     } # param 3: list y length
   { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
-
-  window -r ($x(1) $y(1) $x(2) $y(2))  stats -lmisce
-  window $x(3)^,^$y(1)^,^$x(4)^,^$y(2) winwatch -e '^(winwatch|stats|faces|vdir)'
+  # -- Left Half
+  window -r ($x(1) $y(1) $x(2) $y(2))  stats -lme term.home nine.home
+  # -- Right Half
+  xsep=`{echo $x(4) - $y(2) | bc} # x coordinate that separating winwatch and clock
+  window $x(3)^,^$y(1)^,^$xsep^,^$y(2) winwatch -e '^(clock|winwatch|stats|faces|vdir)'
+  window $xsep^,^$y(1)^,^$x(4)^,^$y(2) clock
 }
 fn MidRow{
   { xlen=$1       ; shift 1     } # param 1: list x length
@@ -24,17 +27,20 @@ fn MidRow{
   window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i riostart/ws/www
   window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i riostart/ws/irc
 
-  window -hide -r ($x(1) $y(3) $x(4) $y(4)) acme -c3 -a
-  window -scroll -r ($x(1) $y(3) $x(2) $y(4)) 'label rc:left;  rc'
-  window -scroll -r ($x(3) $y(3) $x(4) $y(4)) 'label rc:right; rc'
+  window -r ($x(1) $y(3) $x(4) $y(4)) acme -c3 -a
+  window -hide -scroll -r ($x(1) $y(3) $x(2) $y(4)) 'label rc:left;  rc'
+  window -hide -scroll -r ($x(3) $y(3) $x(4) $y(4)) 'label rc:right; rc'
+
+  window -hide -scroll -r ($x(1) $y(3) $x(2) $y(4)) 'label nine:rc:left;  rcpu -p'
+  window -hide -scroll -r ($x(3) $y(3) $x(4) $y(4)) 'label nine:rc:right; rcpu -p'
 }
 fn BotRow{
   { xlen=$1       ; shift 1     } # param 1: list x length
   { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
   { ylen=$1       ; shift 1     } # param 3: list y length
   { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
-  window -r ($x(1) $y(5) $x(2) $y(6)) vdir
-  window -r ($x(3) $y(5) $x(4) $y(6)) faces -i
+  window -scroll -r ($x(1) $y(5) $x(2) $y(6)) 'label console:term; tail +0f /dev/kmesg'  
+  window -scroll -r ($x(3) $y(5) $x(4) $y(6)) faces -i
 }
 fn TileScreen{
   Dim=(`{ScrDim})                    # screen dimension (W x H)
