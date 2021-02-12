@@ -7,30 +7,32 @@ fn TopRow{
   { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
   { ylen=$1       ; shift 1     } # param 3: list y length
   { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
-  # -- Left Half
-  window -r ($x(1) $y(1) $x(2) $y(2))  stats -lme term.home nine.home
-  # -- Right Half
-  xsep=`{echo $x(4) - $y(2) | bc} # x coordinate that separating winwatch and clock
-  window $x(3)^,^$y(1)^,^$xsep^,^$y(2) winwatch -e '^(clock|winwatch|stats|faces|vdir)'
-  window $xsep^,^$y(1)^,^$x(4)^,^$y(2) clock
+  # -- stats
+  window -r ($x(1)                  $y(1) \
+             `{echo $x(2) - 260|bc} $y(2)) stats -lme term.home nine.home
+  # -- vdir 
+  window -r (`{echo $x(2) - 250|bc} $y(1) \
+             `{echo $x(3) + 250|bc} $y(2)) vdir
+  # -- winwatch
+  window `{echo $x(3) + 260|bc}^,^$y(1)^,^$x(4)^,^$y(2) winwatch -e '^(clock|winwatch|stats|faces|vdir)'
 }
 fn MidRow{
   { xlen=$1       ; shift 1     } # param 1: list x length
   { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
   { ylen=$1       ; shift 1     } # param 3: list y length
-  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
-    
-  w=`{echo $x(4) - $x(1) | bc}
-  h=`{echo $y(4) - $y(3) | bc}
+  { y=$*(1-$ylen) ; shift $ylen } # param 4: list y    
+  w=`{echo $x(4) - $x(1)|bc}
+  h=`{echo $y(4) - $y(3)|bc}
   PutWsDim $w $h
-
+  # -- Workspaces
   window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i riostart/ws/www
   window -hide -r ($x(1) $y(3) $x(4) $y(4)) rio -i riostart/ws/irc
-
+  # -- acme
   window -r ($x(1) $y(3) $x(4) $y(4)) acme -c3 -a
+  # -- rc (left|right)
   window -hide -scroll -r ($x(1) $y(3) $x(2) $y(4)) 'label rc:left;  rc'
   window -hide -scroll -r ($x(3) $y(3) $x(4) $y(4)) 'label rc:right; rc'
-
+  # -- rcpu (left|right)
   window -hide -scroll -r ($x(1) $y(3) $x(2) $y(4)) 'label nine:rc:left;  rcpu -p'
   window -hide -scroll -r ($x(3) $y(3) $x(4) $y(4)) 'label nine:rc:right; rcpu -p'
 }
@@ -39,8 +41,15 @@ fn BotRow{
   { x=$*(1-$xlen) ; shift $xlen } # param 2: list x
   { ylen=$1       ; shift 1     } # param 3: list y length
   { y=$*(1-$ylen) ; shift $ylen } # param 4: list y
-  window -scroll -r ($x(1) $y(5) $x(2) $y(6)) 'label console:term; tail +0f /dev/kmesg'  
-  window -scroll -r ($x(3) $y(5) $x(4) $y(6)) faces -i
+  # -- kmesg
+  window -scroll -r ($x(1)                 $y(5) \
+                     `{echo $x(2) - 90|bc} $y(6)) 'label console:term; tail +0f /dev/kmesg'
+  # -- clock
+  window -r         (`{echo $x(2) - 80|bc} $y(5) \
+                     `{echo $x(3) + 80|bc} $y(6)) clock
+  # -- faces
+  window -scroll -r (`{echo $x(3) + 90|bc} $y(5) \
+                     $x(4)                 $y(6)) faces -i
 }
 fn TileScreen{
   Dim=(`{ScrDim})                    # screen dimension (W x H)
