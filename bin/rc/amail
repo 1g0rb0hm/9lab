@@ -1,0 +1,11 @@
+#!/bin/rc
+# run acme for mail only, hiding plumb's edit port
+rfork n
+label Mail
+bind /dev/null /dev/label
+if (test -e /mnt/plumb/edit)
+	bind /dev/null /mnt/plumb/edit
+if (test -e /mnt/term/mnt/plumb/edit)
+	bind /dev/null /mnt/term/mnt/plumb/edit
+acme -c1
+
