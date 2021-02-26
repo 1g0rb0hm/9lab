@@ -1,0 +1,21 @@
+#!/bin/rc
+rfork ne
+vitag=`{youtubedr -info $"1 | awk '
+  /av01/ {
+         tags[ntags++] = $2
+         if($2 == "398"){ # prefer hd720
+                tags[0] = $2
+                exit
+         }
+  }
+  END {
+         if(ntags > 0)
+                print tags[0]
+  }
+'}
+if(~ $#vitag 0)
+  treason `"{youtubedr -i 18 -o /tmp/_vid.mp4 $"1}
+if not
+  treason -a `"{youtubedr -i 140 -o /tmp/_aud.mp4 $"1} `"{youtubedr -i $vitag -o /tmp/_vid.mp4 $"1}
+rm -f /tmp/_^(aud vid)^.mp4
+ 

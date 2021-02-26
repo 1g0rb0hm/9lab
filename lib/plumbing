@@ -1,0 +1,47 @@
+# to update: cp /usr/igor/lib/plumbing /mnt/plumb/rules
+
+editor = sam
+browser = mothra
+
+# plumb youtube videos to treason
+type is text
+data matches 'https://(www.)?youtu(.)?be[^ ]+'
+plumb start  window youtube ''''$0''''
+
+include basic
+
+# existing files in /mnt/term, possibly tagged by line number, go to editor
+type is text
+data matches '([.a-zA-Z¡-￿0-9_/+\-]*[a-zA-Z¡-￿0-9_/+\-])('$addr')?'
+arg isfile	/mnt/term/$1
+data set	$file
+attr add	addr=$3
+plumb to edit
+plumb client window $editor
+
+# nsim .(h|def) files are looked up in inc and passed to edit
+type is text
+data matches '([a-zA-Z¡-￿0-9/_\-]+\.(h|def))('$addr')?'
+arg isfile	/n/nsim.dev/inc/$1
+data set	$file
+attr add	addr=$3
+plumb to edit
+plumb client $editor
+
+# .h files in /mnt/term are looked up in inc and passed to edit
+type is text
+data matches '([a-zA-Z¡-￿0-9/_\-]+\.h)('$addr')?'
+arg isfile /mnt/term/Library/Developer/CommandLineTools/usr/include/c++/v1/$1
+data set	$file
+attr add	addr=$3
+plumb to edit
+plumb client $editor
+
+# c++ <...> header files in /mnt/term are looked up in inc and passed to edit
+type is text
+data matches '<([a-zA-Z¡-￿0-9/_\-]+)>('$addr')?'
+arg isfile /mnt/term/Library/Developer/CommandLineTools/usr/include/c++/v1/$1
+data set	$file
+attr add	addr=$3
+plumb to edit
+plumb client $editor

@@ -1,0 +1,10 @@
+#!/bin/rc
+# run git diff drawterm os command for nSIM project
+if(test -d /mnt/term/$OS_NSIM_SRC){
+	A=develop
+	B=`{dt/git branch --show-current}
+	dt/git diff --relative --no-prefix `{dt/git merge-base $A $B} $B
+}
+if not {
+	echo 'review failed: - '^$OS_NSIM_SRC^' not present'
+}

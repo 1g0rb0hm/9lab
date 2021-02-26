@@ -1,10 +1,10 @@
 #!/bin/rc
 rfork n
-label Mail
+label Notes
 bind /dev/null /dev/label
 if (test -e /mnt/plumb/edit)
 	bind /dev/null /mnt/plumb/edit
 if (test -e /mnt/term/mnt/plumb/edit)
 	bind /dev/null /mnt/term/mnt/plumb/edit
-acme -c1 -l $home/acme.mail
-
+cd $home
+acme -c1 Notes/Inbox.md Notes/Work/Meetings.md Notes/Setup.md Notes/Develop.md 

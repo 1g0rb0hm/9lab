@@ -1,0 +1,8 @@
+#!/bin/rc
+# run git via drawterm os command for nSIM project
+if(test -d /mnt/term/$OS_NSIM_SRC){
+	os -d $OS_NSIM_SRC git $*
+}
+if not {
+	echo 'git failed: - '^$OS_NSIM_SRC^' not present'
+}
